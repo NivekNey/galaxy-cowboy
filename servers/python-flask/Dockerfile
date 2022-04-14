@@ -8,4 +8,4 @@ COPY models /app/models
 
 WORKDIR /app/servers/python-flask/
 
-ENTRYPOINT serve.sh
+ENTRYPOINT ["bash", "serve.sh"]

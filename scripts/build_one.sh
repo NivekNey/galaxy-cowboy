@@ -31,13 +31,16 @@ rsync -ar models/ "${remote}:~/models"
 
 ssh "${remote}" "
     sudo docker build -t ${server_name} -f ~/servers/${server_name}/Dockerfile .
-    sudo docker run -p 9001:9001 --name ${server_name} ${server_name} &> log &
-    timeout 10 grep -q 'Model loaded' <(tail -f log)
+    sudo docker run -p 9001:9001 -d --name ${server_name} ${server_name}
+    sleep 3
+    curl -vvv -i "http://${remote}:9001/"
     ab \
         -p models/req.json \
         -T application/json \
         -c 8 \
         -n 10000 \
+        -q \
         "http://${remote}:9001/predict"
     sudo docker rm -f ${server_name}
+    sudo docker rmi -f ${server_name}
 "

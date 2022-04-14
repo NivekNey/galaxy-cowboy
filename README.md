@@ -4,7 +4,7 @@ Benchmark the serving of ML model in various languages and frameworks.
 Simple model design like Logistic Regression is what's being used in production environment.
 The repo is to provide proof-of-concepts that shows whether a language/framework/model is viable given some SLA like 30ms at p99.
 
-The general setup principle is **4-workers server** and **8-concurrent client**.
+The general setup principle is **1-worker server** and **8-concurrent client**.
 
 <img src="https://cdn.openai.com/dall-e-2/demos/text2im/astronaut/horse/photo/0.jpg" width="300">
 
@@ -53,4 +53,4 @@ bash scripts/build_one.sh 34.127.79.153 python-flask
 
 | server       | p50 | p99 |
 | ------------ | --- | --- |
-| python-flask | 7   | 9   |
+| python-flask | 7   | 8   |
