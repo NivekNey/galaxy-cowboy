@@ -40,7 +40,7 @@ gcloud compute instances create \
 ## Example -- Run a benchmark
 
 ```bash
-bash scripts/build_one.sh 34.127.79.153 python-flask
+bash scripts/build_one.sh "${RUNNER_IP}" python-flask
 ```
 
 ## Benchmark
