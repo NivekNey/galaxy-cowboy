@@ -55,6 +55,7 @@ The unit is millisecond.
 | python-uvicorn   | 2           | 3           |
 | java-jooby       | 1           | 5           |
 | rust-actix       | 1           | 2           |
+| pypy-falcon      | 1           | 5           |
 
 ## Road Map
 
