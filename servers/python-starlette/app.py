@@ -2,15 +2,10 @@ import json
 import math
 import typing
 
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel
-
-app = FastAPI()
-
-
-class Request(BaseModel):
-    values: typing.List[str]
+from starlette.applications import Starlette
+from starlette.requests import Request
+from starlette.responses import JSONResponse, PlainTextResponse
+from starlette.routing import Route
 
 
 class Model:
@@ -32,9 +27,8 @@ class Model:
 model = Model()
 
 
-@app.post("/predict")
-def predict(request: Request):
-    values = request.values
+async def predict(request: Request):
+    values = (await request.json())["values"]
     probability = model.predict(values)
     payload = {
         "probability": probability,
@@ -42,6 +36,13 @@ def predict(request: Request):
     return JSONResponse(content=payload)
 
 
-@app.get("/")
-def health():
-    return "ok"
+async def health(_: Request):
+    return PlainTextResponse(content="ok")
+
+
+app = Starlette(
+    routes=[
+        Route("/", health),
+        Route("/predict", predict, methods=["POST"]),
+    ],
+)

@@ -10,7 +10,7 @@ app = Flask(__name__)
 class Model:
     def __init__(self) -> None:
         self.map = {}
-        with open("/app/models/model.jsonlines") as f:
+        with open("models/model.jsonlines") as f:
             for line in f:
                 entry = json.loads(line)
                 self.map[entry["value"]] = entry["weight"]
