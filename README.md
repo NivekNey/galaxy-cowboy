@@ -45,9 +45,11 @@ bash scripts/build_one.sh 34.127.79.153 python-flask
 
 ## Benchmark
 
+The unit is millisecond.
+
 | server           | predict-p50 | predict-p99 |
 | ---------------- | ----------- | ----------- |
-| python-flask     | 2           | 3           |
+| python-flask     | 2           | 2           |
 | python-fastapi   | 2           | 3           |
 | python-starlette | 1           | 2           |
 

@@ -6,6 +6,6 @@ COPY servers /app/servers
 COPY scripts /app/scripts
 COPY models /app/models
 
-WORKDIR /app/servers/python-fastapi/
+WORKDIR /app/
 
-ENTRYPOINT ["bash", "serve.sh"]
+ENTRYPOINT ["bash", "servers/python-fastapi/serve.sh"]

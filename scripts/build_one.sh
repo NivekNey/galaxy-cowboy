@@ -32,7 +32,12 @@ rsync -ar models/ "${remote}:~/models"
 ssh "${remote}" "
     sudo docker build -t ${server_name} -f ~/servers/${server_name}/Dockerfile .
     sudo docker run -p 9001:9001 -d --name ${server_name} ${server_name}
-    sleep 3
+    
+    printf '%*s\n' "$(tput cols)" '' | tr ' ' -
+    sleep 6
+    sudo docker logs ${server_name}
+    
+    printf '%*s\n' "$(tput cols)" '' | tr ' ' -
     curl -vvv -i "http://localhost:9001/"
     ab \
         -p models/req.json \

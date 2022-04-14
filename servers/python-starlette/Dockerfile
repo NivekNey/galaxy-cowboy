@@ -6,6 +6,6 @@ COPY servers /app/servers
 COPY scripts /app/scripts
 COPY models /app/models
 
-WORKDIR /app/servers/python-starlette/
+WORKDIR /app/
 
-ENTRYPOINT ["bash", "serve.sh"]
+ENTRYPOINT ["bash", "servers/python-starlette/serve.sh"]

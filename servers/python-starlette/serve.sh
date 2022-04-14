@@ -2,9 +2,8 @@
 
 set -e
 
-gunicorn \
+PYTHONPATH=servers/python-starlette gunicorn \
     -w 1 \
     -b 0.0.0.0:9001 \
     --worker-class uvicorn.workers.UvicornWorker \
-    --chdir /app/ \
     app:app
