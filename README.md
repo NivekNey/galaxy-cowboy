@@ -51,6 +51,7 @@ bash scripts/build_one.sh 34.127.79.153 python-flask
 
 ## Benchmark
 
-| server       | p50 | p99 |
-| ------------ | --- | --- |
-| python-flask | 7   | 8   |
+| server         | p50 | p99 |
+| -------------- | --- | --- |
+| python-flask   | 7   | 8   |
+| python-fastapi | 6   | 9   |
