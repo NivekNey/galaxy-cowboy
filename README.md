@@ -24,13 +24,13 @@ instanct_name=free
 gcloud compute instances create \
     ${instanct_name} \
     --project=${gcp_project} \
-    --zone=us-central1-b \
+    --zone=us-west1-b \
     --machine-type=e2-micro \
     --network-interface=network-tier=PREMIUM,subnet=default \
     --maintenance-policy=MIGRATE \
     --service-account=796049519015-compute@developer.gserviceaccount.com \
     --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append \
-    --create-disk=auto-delete=yes,boot=yes,device-name=${instanct_name},image=projects/debian-cloud/global/images/debian-10-buster-v20220406,mode=rw,size=30,type=projects/${gcp_project}/zones/us-central1-b/diskTypes/pd-balanced \
+    --create-disk=auto-delete=yes,boot=yes,device-name=${instanct_name},image=projects/debian-cloud/global/images/debian-11-bullseye-v20220406,mode=rw,size=30,type=projects/${gcp_project}/zones/us-west1-b/diskTypes/pd-balanced \
     --no-shielded-secure-boot \
     --shielded-vtpm \
     --shielded-integrity-monitoring \
@@ -53,8 +53,11 @@ The unit is millisecond.
 | python-fastapi   | 2           | 3           |
 | python-starlette | 1           | 2           |
 | python-uvicorn   | 2           | 3           |
+| java-jooby       | 1           | 5           |
 
 ## Road Map
 
 * More realistic benchmarking environment -- separate server and client
 * Turn the benchmarks into stress tests
+* Replace Apache Bench
+* Log versions
