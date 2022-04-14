@@ -33,6 +33,7 @@ ssh "${remote}" "
     sudo docker rm -f ${server_name}
     sudo docker build -t ${server_name} -f ~/servers/${server_name}/Dockerfile .
     sudo docker run -p 9001:9001 -d --name ${server_name} ${server_name}
+    sleep 10
     curl \
         --retry-all-errors \
         --connect-timeout 5 \

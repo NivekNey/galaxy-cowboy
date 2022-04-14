@@ -29,5 +29,8 @@ target/
 .scala_dependencies
 .cache-main
 
-#general
+# general
 *.class
+
+# rust
+Cargo.lock
