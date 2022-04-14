@@ -52,6 +52,7 @@ The unit is millisecond.
 | python-flask     | 2           | 2           |
 | python-fastapi   | 2           | 3           |
 | python-starlette | 1           | 2           |
+| python-uvicorn   | 2           | 3           |
 
 ## Road Map
 
