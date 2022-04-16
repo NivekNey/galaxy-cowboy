@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #
 # Builds one of the server Docker image on remote
+# I use colima + containerd
+# `colima start --cpu 4 --memory 8`
 #
 # Arguments:
 #   Remote host, an IP or hostname
@@ -10,49 +12,20 @@ set -e
 
 # parse input
 
-remote=$1
-echo "remote=${remote}"
-
-server_name=$2
-echo "server_name=${server_name}"
+name=$1
+echo "name=${name}"
 
 # create model artifacts
 
 mkdir -p models
 python3 scripts/generate_model.py
 
-# scp
-
-rsync -ar servers/ "${remote}:~/servers"
-rsync -ar scripts/ "${remote}:~/scripts"
-rsync -ar models/ "${remote}:~/models"
-
 # build
 
-ssh "${remote}" "
-    sudo docker rm -f ${server_name}
-    sudo docker build -t ${server_name} -f ~/servers/${server_name}/Dockerfile .
-    sudo docker run -p 9001:9001 -d --name ${server_name} ${server_name}
-    sleep 10
-    curl \
-        --retry-all-errors \
-        --connect-timeout 5 \
-        --max-time 10 \
-        --retry 5 \
-        --retry-delay 0 \
-        --retry-max-time 40 \
-        -i "http://localhost:9001/"
-
-    printf '%*s\n' "$(tput cols)" '' | tr ' ' -
-    sudo docker logs ${server_name}
-    printf '%*s\n' "$(tput cols)" '' | tr ' ' -
-
-    ab \
-        -p models/req.json \
-        -T application/json \
-        -c 2 \
-        -n 10000 \
-        -q \
-        "http://localhost:9001/predict"
-    sudo docker rm -f ${server_name}
-"
+nerdctl rm -f ${name} || true
+nerdctl network remove foo || true
+nerdctl network create foo
+nerdctl build -t ${name} -f servers/${name}/Dockerfile .
+nerdctl run --net=foo -p 9001:9001 -d --name ${name} ${name}
+nerdctl run --net=foo -v ./scripts:/scripts -v ./models:/models --rm python:3 python3 -u /scripts/measure.py ${name}
+nerdctl rm -f ${name}

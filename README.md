@@ -13,53 +13,56 @@ The repo is to provide proof-of-concepts that shows whether a language/framework
 
 ## Benchmark Server
 
-For simplicity and budgeting, I'm using free-tier GCP instance for both server and client.
-
-Example gcp scripts I use:
-
-```bash
-gcp_project=kevinyen
-instanct_name=free
-
-gcloud compute instances create \
-    ${instanct_name} \
-    --project=${gcp_project} \
-    --zone=us-west1-b \
-    --machine-type=e2-micro \
-    --network-interface=network-tier=PREMIUM,subnet=default \
-    --maintenance-policy=MIGRATE \
-    --service-account=796049519015-compute@developer.gserviceaccount.com \
-    --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append \
-    --create-disk=auto-delete=yes,boot=yes,device-name=${instanct_name},image=projects/debian-cloud/global/images/debian-11-bullseye-v20220406,mode=rw,size=30,type=projects/${gcp_project}/zones/us-west1-b/diskTypes/pd-balanced \
-    --no-shielded-secure-boot \
-    --shielded-vtpm \
-    --shielded-integrity-monitoring \
-    --reservation-affinity=any
-```
-
-## Example -- Run a benchmark
-
-```bash
-bash scripts/build_one.sh "${RUNNER_IP}" python-flask
-```
+Colima, `$ colima start --cpu 4 --memory 8`.
 
 ## Benchmark
 
-The unit is millisecond.
+```bash
+bash scripts/build_all.sh
+```
 
-| server           | predict-p50 | predict-p99 |
-| ---------------- | ----------- | ----------- |
-| python-flask     | 2           | 2           |
-| python-fastapi   | 2           | 3           |
-| python-starlette | 1           | 2           |
-| python-uvicorn   | 2           | 3           |
-| java-jooby       | 1           | 5           |
-| rust-actix       | 1           | 2           |
-| pypy-falcon      | 1           | 5           |
+With a duplication of 5.
+
+| name             | p50      | p99      | p100      |
+| ---------------- | -------- | -------- | --------- |
+| java-jooby       | 0.5488ms | 0.9732ms | 11.4129ms |
+| java-jooby       | 0.5629ms | 0.8559ms | 5.0180ms  |
+| java-jooby       | 0.5541ms | 0.8199ms | 4.6322ms  |
+| java-jooby       | 0.5491ms | 0.9060ms | 34.7307ms |
+| java-jooby       | 0.5560ms | 0.8252ms | 5.2681ms  |
+| pypy-falcon      | 0.6070ms | 1.6620ms | 20.5381ms |
+| pypy-falcon      | 0.5879ms | 1.1880ms | 13.8819ms |
+| pypy-falcon      | 0.5858ms | 1.1468ms | 21.2333ms |
+| pypy-falcon      | 0.5863ms | 1.1389ms | 10.6239ms |
+| pypy-falcon      | 0.5891ms | 1.1709ms | 17.2720ms |
+| python-fastapi   | 1.1539ms | 1.3852ms | 3.0291ms  |
+| python-fastapi   | 1.1561ms | 1.4949ms | 92.7560ms |
+| python-fastapi   | 1.1518ms | 1.3890ms | 4.2481ms  |
+| python-fastapi   | 1.1730ms | 1.9960ms | 30.4303ms |
+| python-fastapi   | 1.1609ms | 1.7161ms | 5.0640ms  |
+| python-flask     | 0.9370ms | 1.8361ms | 16.1982ms |
+| python-flask     | 0.9329ms | 1.6987ms | 41.5151ms |
+| python-flask     | 0.9353ms | 1.7197ms | 31.8708ms |
+| python-flask     | 0.9344ms | 1.7049ms | 14.9503ms |
+| python-flask     | 0.9542ms | 1.7161ms | 19.5830ms |
+| python-starlette | 0.5898ms | 0.7751ms | 3.9260ms  |
+| python-starlette | 0.5910ms | 0.8950ms | 14.5760ms |
+| python-starlette | 0.5920ms | 0.8142ms | 4.1490ms  |
+| python-starlette | 0.5929ms | 0.7770ms | 3.0329ms  |
+| python-starlette | 0.5944ms | 0.9627ms | 10.9241ms |
+| python-uvicorn   | 1.1730ms | 2.3599ms | 17.3390ms |
+| python-uvicorn   | 1.1480ms | 1.6668ms | 10.5641ms |
+| python-uvicorn   | 1.1477ms | 1.4689ms | 7.9138ms  |
+| python-uvicorn   | 1.1580ms | 1.5929ms | 5.8408ms  |
+| python-uvicorn   | 1.1411ms | 1.3719ms | 3.5529ms  |
+| rust-actix       | 0.6320ms | 0.8540ms | 2.7022ms  |
+| rust-actix       | 0.6332ms | 0.8938ms | 3.7699ms  |
+| rust-actix       | 0.6299ms | 0.9522ms | 3.9210ms  |
+| rust-actix       | 0.6289ms | 0.8640ms | 3.9349ms  |
+| rust-actix       | 0.6320ms | 0.8702ms | 3.4230ms  |
 
 ## Road Map
 
 * More realistic benchmarking environment -- separate server and client
 * Turn the benchmarks into stress tests
-* Replace Apache Bench
 * Log versions
