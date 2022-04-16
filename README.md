@@ -11,6 +11,20 @@ I like this [DALLÂ·E 2](https://openai.com/dall-e-2/) generated image a lot, ðŸ§
 Simple model design like Logistic Regression is what's being used in production environment.
 The repo is to provide proof-of-concepts that shows whether a language/framework/model is viable given some SLA like 30ms at p99.
 
+## Candidate Selection
+
+### Python
+
+Data Science and modeling work are nowadays mostly on Python. If the serving of the designed model can also be served in Python, then the maintenance footprint would be smaller and can have 1 expert team for end-to-end.
+
+### Java
+
+Product servers are usually implemented in Java, therefore the production team may want to support a prediction server that's also implemented in the Java family.
+
+### Rust
+
+The new kid in the town. High expectation for it to be the "ultimate & most efficient" prediction server.
+
 ## Benchmark Server
 
 Colima, `$ colima start --cpu 4 --memory 8`.
