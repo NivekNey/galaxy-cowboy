@@ -46,31 +46,30 @@ if __name__ == "__main__":
         payload = f.read()
     headers = {"Content-Type": "application/json"}
 
-    for _ in range(5):
-        latencies = []
-        statuses = []
-        for i in range(10000):
-            t1 = time.time()
-            conn.request("POST", "/predict", payload, headers)
-            res = conn.getresponse()
-            t2 = time.time()
+    latencies = []
+    statuses = []
+    for i in range(50000):
+        t1 = time.time()
+        conn.request("POST", "/predict", payload, headers)
+        res = conn.getresponse()
+        t2 = time.time()
 
-            # warm up
-            if i > 1000:
-                latencies.append(t2 - t1)
-                statuses.append(res.status)
+        # warm up
+        if i > 1000:
+            latencies.append(t2 - t1)
+            statuses.append(res.status)
 
-            # debug
-            if i == 10:
-                print(f"response={res.read().decode().strip()}")
-            else:
-                res.read()
+        # debug
+        if i == 10:
+            print(f"response={res.read().decode().strip()}")
+        else:
+            res.read()
 
-        latencies.sort()
-        print(f"statuses={dict(Counter(statuses))}")
-        p50 = latencies[int(len(latencies) * 0.50)] * 1000
-        p99 = latencies[int(len(latencies) * 0.99)] * 1000
-        p100 = latencies[-1] * 1000
-        print(f"| name | p50 | p99 | p100 |")
-        print(f"| --- | --- | --- | --- |")
-        print(f"| {name} | {p50:.4f}ms | {p99:.4f}ms | {p100:.4f}ms |")
+    latencies.sort()
+    print(f"statuses={dict(Counter(statuses))}")
+    p50 = latencies[int(len(latencies) * 0.50)] * 1000
+    p99 = latencies[int(len(latencies) * 0.99)] * 1000
+    p100 = latencies[-1] * 1000
+    print(f"| name | p50 | p99 | p100 |")
+    print(f"| --- | --- | --- | --- |")
+    print(f"| {name} | {p50:.4f}ms | {p99:.4f}ms | {p100:.4f}ms |")
